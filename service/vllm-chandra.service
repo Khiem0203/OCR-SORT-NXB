@@ -1,0 +1,26 @@
+[Unit]
+Description=vLLM Service for datalab-to/chandra-ocr-2
+After=network.target
+
+[Service]
+User=your_user
+Group=your_user
+WorkingDirectory=/home/your_user
+Environment="PATH=/home/your_user/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="CUDA_VISIBLE_DEVICES=1"
+Environment="HF_HUB_OFFLINE=1"
+ExecStart=/home/your_user/.venv/bin/vllm serve \
+    "/home/your_user/.cache/huggingface/hub/models--datalab-to--chandra-ocr-2/snapshots/af93b47dba1b47b6640c86ccf487ed2260ab9a09" \
+    --trust-remote-code \
+    --port 8101 \
+    --max-model-len 6000 \
+    --gpu-memory-utilization 0.95 \
+    --max-num-batched-tokens 9216 \
+    --max-num-seqs 20 \
+    --enable-prefix-caching \
+    --disable-log-stats
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

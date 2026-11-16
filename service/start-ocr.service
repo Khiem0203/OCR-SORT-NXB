@@ -1,0 +1,18 @@
+[Unit]
+Description=OCR SORT BOOK Service
+After=network.target vllm-chandra.service llm-qwen3.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=your_user
+Group=your_user
+WorkingDirectory=/home/your_user/OCR_SORT_NXB
+ExecStart=/bin/bash /home/your_user/OCR_SORT_NXB/bash_sh/sort/start-service.sh
+ExecStop=/bin/bash /home/your_user/OCR_SORT_NXB/bash_sh/sort/stop-service.sh
+Environment="PATH=/home/your_user/anaconda3/envs/ocr/bin:/usr/local/bin:/usr/bin:/bin"
+# Script chờ Spellfix (180s) nạp model
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target
